@@ -11,6 +11,7 @@ const createHeader = () => {
   <div>
     <img src="/public/assets/logo.png" alt="logo">
     ${createButton ({ text: "Explorar", bgColor: "var(--blue)" })}
+    ${createButton({ text: "Limpiar búsqueda", bgColor: "var(--blue)", id: "clearButton" })}
   </div>
   <div>
     <input type="text" placeholder="¿Qué estás buscando?" id="search" class="buscador">
@@ -49,25 +50,37 @@ const createGallery = async () => {
 
 createGallery();
 
+const createErrorMessage = () => {
+  const messageElement = document.createElement("p");
+  messageElement.textContent = "😲 No se han encontrado resultados 😞";
+  messageElement.classList.add("no-results");
+  return messageElement;
+};
+
 const createSearch = async () => {
   try {
     const searchInput = document.getElementById("search");
     const searchQuery = searchInput.value.trim();
+    const gallery = document.querySelector("main");
+    gallery.innerHTML = "";
 
     if (searchQuery) {
-      const gallery = document.querySelector("main");
-      gallery.innerHTML = "";
-
       const response = await unsplash.search.getPhotos({ query: searchQuery, per_page: 50 });
       const images = response.response.results;
 
-      images.forEach(image => {
-        const imgElement = document.createElement("img");
-        imgElement.src = image.urls.regular;
-        imgElement.alt = image.alt_description;
-        gallery.appendChild(imgElement);
-      });
-    } 
+      if (images.length === 0) {
+        gallery.appendChild(createErrorMessage());
+      } else {
+        images.forEach(image => {
+          const imgElement = document.createElement("img");
+          imgElement.src = image.urls.regular;
+          imgElement.alt = image.alt_description;
+          gallery.appendChild(imgElement);
+        });
+      }
+    } else {
+      createGallery();
+    }
   } catch (error) {
     console.error("Error", error);
   }
@@ -79,6 +92,15 @@ const search = () => {
 };
 
 search();
+
+const clearSearch = () => {
+  const clearSearchButton = document.querySelector("#clearButton");
+  clearSearchButton.addEventListener("click", () => {
+    location.reload();
+  });
+};
+
+clearSearch();
 
 const createFooter = () => {
   return '<h3>Proyecto 3 made by Débora Pires</h3>'

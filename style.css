@@ -15,10 +15,15 @@
   font-family: "Poppins", sans-serif;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
 }
 
 header {
@@ -42,7 +47,6 @@ header > div > img {
 }
 
 .buscador {
-  width: 900px;
   padding: 8px 10px;
   border: 1px solid var(--blue);
   background-color: var(--white);
@@ -61,7 +65,7 @@ header > div > img {
 main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 15px;
   padding: 15px;
@@ -70,7 +74,12 @@ main {
 main > img {
   border-radius: 10px;
   width: 20%;
-  height: 20%;
+  height: auto;
+}
+
+.no-results {
+  color: var(--black);
+  font-weight: bold;
 }
 
 footer {
@@ -79,6 +88,10 @@ footer {
   align-items: center;
   justify-content: center;
   color: var(--purple);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: var(--white);
 }
 
 @media screen and (max-width: 768px) {
@@ -91,9 +104,5 @@ footer {
   header > div {
     gap: 10px;
     text-align: center;
-  }
-
-  .buscador {
-    width: 100%;
   }
 }
